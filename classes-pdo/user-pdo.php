@@ -76,9 +76,9 @@ class Userpdo {
 
     public function delete() 
     {
-        global $conn;
+        global $pdo;
         $sql = "DELETE FROM utilisateurs WHERE login = $this->login";
-        $stmt = $conn->prepare($sql);
+        $stmt = $pdo->prepare($sql);
         $stmt->execute();
     }
 
