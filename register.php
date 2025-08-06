@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Test classes</title>
+    <link href="styles.css" rel="stylesheet">
+</head>
+<body>
+    <h2>Register</h2>
+    <div class="container" style="height: 350px;">
+    <form action="user.php" method="POST">
+
+        <label for="loginregister">Login :</label><br>
+        <input type="text" id="loginregister" name="loginregister" required><br><br>
+
+        <label for="passwordregister">Mot de passe :</label><br>
+        <input type="text" id="passwordregister" name="passwordregister" required><br><br>
+
+        <label for="email">Email :</label><br>
+        <input type="email" id="email" name="email" required><br><br>
+
+        <label for="firstname">Firstname :</label><br>
+        <input type="text" id="firstname" name="firstname" required><br><br>
+
+        <label for="lastname">Lastname :</label><br>
+        <input type="text" id="lastname" name="lastname" required><br><br>
+
+        <input type="submit" value="S'inscrire">
+        </div>
+    </form>
+</body>
+</html>
