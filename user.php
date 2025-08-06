@@ -135,25 +135,25 @@ $user = new User();
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') 
     { 
-        // register
-    if (isset($_POST['loginregister']) && isset($_POST['passwordregister']) && isset($_POST['email']) && isset($_POST['firstname']) && isset($_POST['lastname'])) 
-    {
-        $user->register(
-            $_POST['loginregister'],
-            $_POST['passwordregister'],
-            $_POST['email'],
-            $_POST['firstname'],
-            $_POST['lastname']);
-    } 
+    // register
+        if (isset($_POST['loginregister']) && isset($_POST['passwordregister']) && isset($_POST['email']) && isset($_POST['firstname']) && isset($_POST['lastname'])) 
+        {
+            $user->register(
+                $_POST['loginregister'],
+                $_POST['passwordregister'],
+                $_POST['email'],
+                $_POST['firstname'],
+                $_POST['lastname']);
+        } 
     // fin register
 
     // login
-    if (isset($_POST['loginlogin']) && isset($_POST['passwordlogin'])) 
-    {
-        $user->connect(
-            $_POST['loginlogin'],
-            $_POST['passwordlogin'],);
-    } 
+        if (isset($_POST['loginlogin']) && isset($_POST['passwordlogin'])) 
+        {
+            $user->connect(
+                $_POST['loginlogin'],
+                $_POST['passwordlogin'],);
+        } 
     }   
 
 
