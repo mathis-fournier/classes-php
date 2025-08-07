@@ -56,24 +56,32 @@ class Userpdo {
                                         // CONNECT MARCHE PAS EN PDO
     public function connect($login, $password) 
     {
-        global $pdo;
+    global $pdo;
 
         $sql = "SELECT * FROM utilisateurs WHERE login = ?";
         $stmt = $pdo->prepare($sql);
-        $stmt->execute([$login]);
+        $success = $stmt->execute([$login]);
+        if ($success && $stmt->rowCount() > 0){
         $data = $stmt->fetch(PDO::FETCH_ASSOC);
-
-        if ($data && password_verify($password, $data['password'])) {
-            $this->id = $data['id'];
-            $this->login = $data['login'];
-            $this->password = $data['password'];
-            $this->email = $data['email'];
-            $this->firstname = $data['firstname'];
-            $this->lastname = $data['lastname'];
-            return true;  
-        } 
+        $hash = (password_hash($password, PASSWORD_DEFAULT));
+            if (password_verify($password, $hash)) {
+                $this->id = $data['id'];
+                $this->login = $data['login'];
+                $this->password = $data['password'];
+                $this->email = $data['email'];
+                $this->firstname = $data['firstname'];
+                $this->lastname = $data['lastname'];
+                return true;
+            } 
+            else 
+            {
+                echo "Mot de passe incorrect.<br>";
+            }
+        }
+        
         return false;
     }
+    
         // CONNECT MARCHE PAS EN PDO
             // CONNECT MARCHE PAS EN PDO    // CONNECT MARCHE PAS EN PDO    // CONNECT MARCHE PAS EN PDO    // CONNECT MARCHE PAS EN PDO
                 // CONNECT MARCHE PAS EN PDO    // CONNECT MARCHE PAS EN PDO    // CONNECT MARCHE PAS EN PDO    // CONNECT MARCHE PAS EN PDO
@@ -105,6 +113,7 @@ class Userpdo {
     {
         if ($this->id > 0) 
         {
+            echo "connecté";
             return true;
         } 
         else
@@ -116,7 +125,15 @@ class Userpdo {
 
     public function getAllInfos()
     {
-        echo $this->password;
+        global $pdo;
+        $stmt = $pdo->prepare("SELECT * FROM utilisateurs WHERE login = ?");
+        $stmt->execute([$this->login]);
+        if($stmt->rowCount()>0){
+            return $stmt->fetch(PDO::FETCH_ASSOC);
+        }
+        else{
+            return null;
+        }
     }
 
     public function getLogin()
@@ -141,40 +158,52 @@ class Userpdo {
     
 }
 
+
 $user = new Userpdo();
 
 
-// if ($_SERVER['REQUEST_METHOD'] === 'POST') 
-//     { 
-//     // register
-//         if (isset($_POST['loginregister']) && isset($_POST['passwordregister']) && isset($_POST['email']) && isset($_POST['firstname']) && isset($_POST['lastname'])) 
-//         {
-//             $user->register(
-//                 $_POST['loginregister'],
-//                 $_POST['passwordregister'],
-//                 $_POST['email'],
-//                 $_POST['firstname'],
-//                 $_POST['lastname']);
-//         } 
-//     // fin register
+include 'pages.php';
+if ($_SERVER['REQUEST_METHOD'] === 'POST') 
+    { 
+    // register
+        if (isset($_POST['loginregister']) && isset($_POST['passwordregister']) && isset($_POST['email']) && isset($_POST['firstname']) && isset($_POST['lastname'])) 
+        {
+            $user->register(
+                $_POST['loginregister'],
+                $_POST['passwordregister'],
+                $_POST['email'],
+                $_POST['firstname'],
+                $_POST['lastname']);
 
-//     // login
-//         if (isset($_POST['loginlogin']) && isset($_POST['passwordlogin'])) 
-//         {
-//             $user->connect(
-//                 $_POST['loginlogin'],
-//                 $_POST['passwordlogin'],);
-//         } 
-
-//         if (isset($_POST['getAllInfos']))
-//         {
-//             $user->getAllInfos();
-//         }
-//     }   
+            header('Location: /classes-php/classes-pdo/login.html');
+            exit();
+        } 
+    // fin register
 
 
-// // $user->register('test', 'testpdo', 'testpdo@gmail.com', 'aa', 'aa');
-$user->connect('testdelete', 'testdelete');
-$user->isConnected();
-$user->getAllInfos();
+
+
+    // login button
+        
+        if (isset($_POST['loginlogin']) && isset($_POST['passwordlogin'])) 
+        {            
+            if ($user->connect($_POST['loginlogin'], $_POST['passwordlogin']) === true)
+            {
+                echo $content;
+            } 
+            else
+            {
+                echo "erreur connexion : mauvais mdp ou login";
+            }
+        } 
+
+    }   
+
+       
+
+
+// $user->register('test', 'testpdo', 'testpdo@gmail.com', 'aa', 'aa');
+// $user->connect('test', 'tespdo');
+// $user->isConnected();
+// $user->getAllInfos();
 ?>
